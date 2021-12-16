@@ -8,13 +8,185 @@
   <meta http-equiv="origin-trial"
     content="AhZ0yP35wnlfvVtqZa+GRb3MfXgtHnS8+i5+tgRI+tkz0/b7DQ+a72h1nLzbWxT/WfvVGN95G2hIexI/5P+sRgkAAABVeyJvcmlnaW4iOiJodHRwczovL2JlbmphbWluYmVuYmVuLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViQ29kZWNzIiwiZXhwaXJ5IjoxNjM4NDAzMTk5fQ==">
   <title>Scrub</title>
+
+  <style>
+    canvas {max-width: 100vw;}
+  </style>
 </head>
 
 <body>
   <h1>Scrub</h1>
-  <video controls>
-    <source src="./water-5s.webm" type="video/webm">
-  </video>
+  <!-- <video controls>
+    <source src="./video.webm" type="video/webm">
+    
+  </video> -->
+
+  <script type="module" src="demo.js"></script>
+
+  <script type="modulex">
+
+
+    class Writer {
+      constructor(size) {
+        this.data = new Uint8Array(size);
+        this.idx = 0;
+        this.size = size;
+      }
+
+      getData() {
+        if (this.idx != this.size)
+          throw "Mismatch between size reserved and sized used"
+
+        return this.data.slice(0, this.idx);
+      }
+
+      writeUint8(value) {
+        this.data.set([value], this.idx);
+        this.idx++;
+      }
+
+      writeUint16(value) {
+        // TODO: find a more elegant solution to endianess.
+        var arr = new Uint16Array(1);
+        arr[0] = value;
+        var buffer = new Uint8Array(arr.buffer);
+        this.data.set([buffer[1], buffer[0]], this.idx);
+        this.idx += 2;
+      }
+
+      writeUint8Array(value) {
+        this.data.set(value, this.idx);
+        this.idx += value.length;
+      }
+    }
+
+
+    function getExtradata(avccBox) {
+      var i;
+      var size = 7;
+      for (i = 0; i < avccBox.SPS.length; i++) {
+        // nalu length is encoded as a uint16.
+        size += 2 + avccBox.SPS[i].length;
+      }
+      for (i = 0; i < avccBox.PPS.length; i++) {
+        // nalu length is encoded as a uint16.
+        size += 2 + avccBox.PPS[i].length;
+      }
+
+      var writer = new Writer(size);
+
+      writer.writeUint8(avccBox.configurationVersion);
+      writer.writeUint8(avccBox.AVCProfileIndication);
+      writer.writeUint8(avccBox.profile_compatibility);
+      writer.writeUint8(avccBox.AVCLevelIndication);
+      writer.writeUint8(avccBox.lengthSizeMinusOne + (63 << 2));
+
+      writer.writeUint8(avccBox.nb_SPS_nalus + (7 << 5));
+      for (i = 0; i < avccBox.SPS.length; i++) {
+        writer.writeUint16(avccBox.SPS[i].length);
+        writer.writeUint8Array(avccBox.SPS[i].nalu);
+        window.temp = avccBox.SPS[i].nalu;
+      }
+
+      writer.writeUint8(avccBox.nb_PPS_nalus);
+      for (i = 0; i < avccBox.PPS.length; i++) {
+        writer.writeUint16(avccBox.PPS[i].length);
+        writer.writeUint8Array(avccBox.PPS[i].nalu);
+      }
+
+      return writer.getData();
+    }
+
+
+    import mp4box from 'https://cdn.skypack.dev/mp4box';
+
+    const file = window.f = mp4box.createFile()
+    file.onError = function (e) { console.log("Error", e) };
+
+    const decoder = window.d = new VideoDecoder({
+      output(frame) { console.log("FRAME", frame) },
+      error(e) { console.log("ERRP", e.message); }
+    })
+
+    // file.onSegment = function (id, user, buffer, sampleNumber, last) {
+    //   console.log("SEGMENT!", { id, user, buffer, sampleNumber, last })
+    // }
+
+
+    file.onReady = async function (info) {
+      console.log("Ready", info)
+
+      // const extra = getExtradata(file.getAvccBox())
+      // console.log(extra)
+
+      await decoder.configure({
+        // codec: "avc1.4d401e",
+        // codedHeight: 360,
+        // codedWidth: 640,
+        // description: new Uint8Array(1, 77, 64, 30, 255, 225, 0, 24, 103, 77, 64, 30, 232, 128, 80, 23, 252, 184, 8, 128, 0, 0, 3, 0, 128, 0, 0, 30, 7, 139, 22, 137, 1, 0, 4, 104, 235, 239, 32)
+
+        codec: 'avc1.4d4028',// file.getCodecs(),
+      })
+
+
+      // file.setSegmentOptions(info.tracks[0].id);
+      file.setExtractionOptions(info.tracks[0].id);
+
+      file.start()
+
+    };
+
+
+
+    // file.onSamples = async function (track, ref, samples) {
+    //   console.log("On Samples!?!", samples)
+
+    //   for (const sample of samples) {
+    //     const type = sample.is_sync ? "key" : "delta";
+
+    //     decoder.flush()
+
+    //     const chunk = new EncodedVideoChunk({
+    //       type: type,
+    //       timestamp: 0,//sample.cts,
+    //       duration: sample.duration,
+    //       data: sample.data
+    //     });
+
+    //     // debugger;
+
+    //     console.log(chunk)
+
+    //     // this._onChunk(chunk);
+    //     decoder.decode(chunk)
+
+    //     alert("DONE!")
+    //     break;
+    //   }
+    // }
+
+
+
+    async function run() {
+      const res = await fetch('water-trim.mp4')
+
+      console.log("loaded")
+      // todo - stream
+      const data = await res.arrayBuffer();
+      data.fileStart = 0;
+
+      file.appendBuffer(data)
+
+      window.ffile = file
+
+      file.flush()
+
+    }
+
+    run();
+
+
+  </script>
 </body>
 
 </html>
