@@ -14,7 +14,9 @@ document.body.appendChild(offscreen)
 let startTime = 0;
 let frameCount = 0;
 
-let demuxer = new MP4Demuxer("water-trim.mp4");
+let demuxer = new MP4Demuxer("water-low.mp4");
+// let demuxer = new MP4Demuxer("VID_20190103_140152.mp4");
+
 
 function getFrameStats() {
     let now = performance.now();
@@ -31,10 +33,25 @@ function getFrameStats() {
     return "Extracted " + frameCount + " frames" + fps;
 }
 
+const frames = window.frames = []
+const bitmaps = window.bitmaps = []
+
+window.addEventListener('mousemove', (e) => {
+    const idx = Math.floor((e.clientX / window.innerWidth) * bitmaps.length)
+    const bitmap = bitmaps[idx]
+
+    if (bitmap) {
+        ctx.drawImage(bitmap, 0, 0, offscreen.width, offscreen.height);
+    }
+
+})
+
 let decoder = new VideoDecoder({
-    output: frame => {
+    output: async frame => {
         ctx.drawImage(frame, 0, 0, offscreen.width, offscreen.height);
 
+        frames.push(frame)
+        bitmaps.push(await createImageBitmap(frame))
         // Close ASAP.
         frame.close();
 
