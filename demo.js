@@ -1,4 +1,32 @@
-import { MP4Demuxer } from './mp4_demuxer.js'
+const worker = new Worker('decode-worker.js', { type: "module" })
+
+worker.postMessage("videos/ferry-3.5mb.mp4")
+
+const offscreen = document.createElement('canvas')
+const ctx = offscreen.getContext('2d')
+document.body.appendChild(offscreen)
+
+
+const bitmaps = window.bitmaps = []
+
+worker.addEventListener('message', (event) => {
+    if (event.data instanceof ImageBitmap) {
+        bitmaps.push(event.data)
+
+        document.body.style.height = `calc(100vh + ${bitmaps.length * 20}px)`
+
+        if (offscreen.width !== event.data.width) {
+            offscreen.width = event.data.width
+            offscreen.height = event.data.height
+            render()
+        }
+    } else {
+        console.error("unexpected message")
+    }
+})
+
+
+// import { MP4Demuxer } from './mp4_demuxer.js'
 
 // importScripts('./mp4box.all.min.js');
 // importScripts('./mp4_demuxer.js');
@@ -7,15 +35,12 @@ import { MP4Demuxer } from './mp4_demuxer.js'
 // let offscreen = e.data.canvas;
 // let ctx = offscreen.getContext('2d');
 
-const offscreen = document.createElement('canvas')
-const ctx = offscreen.getContext('2d')
-document.body.appendChild(offscreen)
 
-let startTime = 0;
-let frameCount = 0;
+// let startTime = 0;
+// let frameCount = 0;
 
 // let demuxer = new MP4Demuxer("water-low.mp4");
-let demuxer = new MP4Demuxer("videos/ferry-3.5mb.mp4");
+// let demuxer = new MP4Demuxer("videos/ferry-3.5mb.mp4");
 // let demuxer = new MP4Demuxer("VID_20190103_140152.mp4");
 
 
@@ -23,7 +48,7 @@ let demuxer = new MP4Demuxer("videos/ferry-3.5mb.mp4");
 
 
 
-const bitmaps = window.bitmaps = []
+// const bitmaps = window.bitmaps = []
 
 let idx = 0;
 
@@ -82,33 +107,33 @@ window.addEventListener('scroll', onScroll)
 
 
 
-let decoder = new VideoDecoder({
-    output: async frame => {
-        // ctx.drawImage(frame, 0, 0, offscreen.width, offscreen.height);
+// let decoder = new VideoDecoder({
+//     output: async frame => {
+//         // ctx.drawImage(frame, 0, 0, offscreen.width, offscreen.height);
 
-        // frames.push(frame)
-        bitmaps.push(await createImageBitmap(frame))
-        // Close ASAP.
-        frame.close();
+//         // frames.push(frame)
+//         bitmaps.push(await createImageBitmap(frame))
+//         // Close ASAP.
+//         frame.close();
 
-        // idx = bitmaps.length - 1;
+//         // idx = bitmaps.length - 1;
 
-        // requestAnimationFrame(render)
+//         // requestAnimationFrame(render)
 
-        setScrollHeight()
+//         setScrollHeight()
 
-        // Draw some optional stats.
-        // ctx.font = '35px sans-serif';
-        // ctx.fillStyle = "#ffffff";
-        // ctx.fillText(getFrameStats(), 40, 40, offscreen.width);
-    },
-    error: e => console.error(e),
-});
+//         // Draw some optional stats.
+//         // ctx.font = '35px sans-serif';
+//         // ctx.fillStyle = "#ffffff";
+//         // ctx.fillText(getFrameStats(), 40, 40, offscreen.width);
+//     },
+//     error: e => console.error(e),
+// });
 
-demuxer.getConfig().then((config) => {
-    offscreen.height = config.codedHeight;
-    offscreen.width = config.codedWidth;
+// demuxer.getConfig().then((config) => {
+//     offscreen.height = config.codedHeight;
+//     offscreen.width = config.codedWidth;
 
-    decoder.configure(config);
-    demuxer.start((chunk) => { decoder.decode(chunk); })
-});
+//     decoder.configure(config);
+//     demuxer.start((chunk) => { decoder.decode(chunk); })
+// });
