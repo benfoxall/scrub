@@ -1,7 +1,8 @@
 const worker = new Worker('decode-worker.js', { type: "module" })
 
 // worker.postMessage("videos/ferry-3.5mb.mp4")
-worker.postMessage("videos/ferry-20mb.mp4")
+// worker.postMessage("videos/ferry-20mb.mp4")
+worker.postMessage("videos/ferry-trim.mp4")
 
 const offscreen = document.createElement('canvas')
 const ctx = offscreen.getContext('2d')
@@ -50,7 +51,7 @@ worker.addEventListener('message', (event) => {
 
 
 // const bitmaps = window.bitmaps = []
-const step = 16;
+const step = 24;
 let raf = null;
 let idx = 0;
 
