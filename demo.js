@@ -14,24 +14,13 @@ document.body.appendChild(offscreen)
 let startTime = 0;
 let frameCount = 0;
 
-let demuxer = new MP4Demuxer("water-low.mp4");
+// let demuxer = new MP4Demuxer("water-low.mp4");
+let demuxer = new MP4Demuxer("videos/ferry-3.5mb.mp4");
 // let demuxer = new MP4Demuxer("VID_20190103_140152.mp4");
 
 
-function getFrameStats() {
-    let now = performance.now();
-    let fps = "";
 
-    if (frameCount++) {
-        let elapsed = now - startTime;
-        fps = " (" + (1000.0 * frameCount / (elapsed)).toFixed(0) + " fps)"
-    } else {
-        // This is the first frame.
-        startTime = now;
-    }
 
-    return "Extracted " + frameCount + " frames" + fps;
-}
 
 
 const bitmaps = window.bitmaps = []
@@ -45,30 +34,52 @@ function render() {
     }
 }
 
-window.addEventListener('mousemove', (e) => {
-    const idx2 = Math.floor((e.clientX / window.innerWidth) * bitmaps.length)
+function setScrollHeight() {
+    document.body.style.height = `calc(100vh + ${bitmaps.length * 10}px)`
+}
+
+
+function onScroll() {
+
+
+    const idx2 = Math.floor(window.scrollY / 10)
+    console.log("scroll", idx2, window.scrollY)
 
     if (idx !== idx2) {
         idx = idx2;
         requestAnimationFrame(render)
     }
+}
 
-    e.preventDefault()
-})
-
-window.addEventListener('touchmove', (e) => {
-    const x = e.touches[0].clientX
-
-    const idx2 = Math.floor((x / window.innerWidth) * bitmaps.length)
-
-    if (idx !== idx2) {
-        idx = idx2;
-        requestAnimationFrame(render)
-    }
+window.addEventListener('scroll', onScroll)
 
 
-    e.preventDefault()
-}, { passive: false })
+// window.addEventListener('mousemove', (e) => {
+//     const idx2 = Math.floor((e.clientX / window.innerWidth) * bitmaps.length)
+
+//     if (idx !== idx2) {
+//         idx = idx2;
+//         requestAnimationFrame(render)
+//     }
+
+//     e.preventDefault()
+// })
+
+// window.addEventListener('touchmove', (e) => {
+//     const x = e.touches[0].clientX
+
+//     const idx2 = Math.floor((x / window.innerWidth) * bitmaps.length)
+
+//     if (idx !== idx2) {
+//         idx = idx2;
+//         requestAnimationFrame(render)
+//     }
+
+
+//     e.preventDefault()
+// }, { passive: false })
+
+
 
 
 let decoder = new VideoDecoder({
@@ -80,7 +91,11 @@ let decoder = new VideoDecoder({
         // Close ASAP.
         frame.close();
 
-        requestAnimationFrame(render)
+        // idx = bitmaps.length - 1;
+
+        // requestAnimationFrame(render)
+
+        setScrollHeight()
 
         // Draw some optional stats.
         // ctx.font = '35px sans-serif';
