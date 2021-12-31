@@ -1,6 +1,7 @@
 const worker = new Worker('decode-worker.js', { type: "module" })
 
-worker.postMessage("videos/ferry-3.5mb.mp4")
+// worker.postMessage("videos/ferry-3.5mb.mp4")
+worker.postMessage("videos/ferry-20mb.mp4")
 
 const offscreen = document.createElement('canvas')
 const ctx = offscreen.getContext('2d')
@@ -13,7 +14,7 @@ worker.addEventListener('message', (event) => {
     if (event.data instanceof ImageBitmap) {
         bitmaps.push(event.data)
 
-        document.body.style.height = `calc(100vh + ${bitmaps.length * 20}px)`
+        setScrollHeight()
 
         if (offscreen.width !== event.data.width) {
             offscreen.width = event.data.width
@@ -49,7 +50,8 @@ worker.addEventListener('message', (event) => {
 
 
 // const bitmaps = window.bitmaps = []
-
+const step = 16;
+let raf = null;
 let idx = 0;
 
 function render() {
@@ -57,22 +59,36 @@ function render() {
     if (bitmap) {
         ctx.drawImage(bitmap, 0, 0, offscreen.width, offscreen.height);
     }
+
+    // ctx.globalAlpha = 1 - mix;
+    // ctx.clearRect(0, 0, offscreen.width, offscreen.height)
+
+    // for (let i = 0; i < 10; i++) {
+
+
+    //     const bitmap = bitmaps[idx + i];
+
+    //     ctx.globalAlpha = i * 0.1;
+    //     // ctx.globalAlpha = 0.2
+    //     // ctx.globalCompositeOperation = 'lighter';
+    //     ctx.drawImage(bitmap, i * 20, i * 20, offscreen.width - (i * 40), offscreen.height - (i * 40));
+
+    // }
 }
 
 function setScrollHeight() {
-    document.body.style.height = `calc(100vh + ${bitmaps.length * 10}px)`
+    document.body.style.height = `calc(100vh + ${bitmaps.length * step}px)`
 }
 
 
+
 function onScroll() {
-
-
-    const idx2 = Math.floor(window.scrollY / 10)
-    console.log("scroll", idx2, window.scrollY)
+    const idx2 = Math.floor(window.scrollY / step);
 
     if (idx !== idx2) {
         idx = idx2;
-        requestAnimationFrame(render)
+        cancelAnimationFrame(raf)
+        raf = requestAnimationFrame(render)
     }
 }
 
