@@ -1,8 +1,9 @@
-const worker = new Worker('decode-worker.js', { type: "module" })
+const worker = window.worker = new Worker('decode-worker.js', { type: "module" })
 
 // worker.postMessage("videos/ferry-3.5mb.mp4")
 // worker.postMessage("videos/ferry-20mb.mp4")
-worker.postMessage("videos/ferry-trim.mp4")
+// worker.postMessage("videos/ferry-trim.mp4")
+worker.postMessage("videos/earth.mp4")
 
 const offscreen = document.createElement('canvas')
 const ctx = offscreen.getContext('2d')
