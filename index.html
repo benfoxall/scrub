@@ -22,21 +22,15 @@
         width: 90%;
         height: 90%;
         object-fit: contain;
-        /* border-radius: 3px; */
-      }
-
-      button {
-        background: none;
-        font-family: sans-serif;
-        color: #fff;
-        border: none;
-        font-size: 7vw;
-        padding: 1em;
       }
     </style>
   </head>
 
   <body>
-    <script type="module" src="demo.js"></script>
+    <script type="module">
+      import { Scroller } from "./Scroller.js";
+
+      new Scroller("videos/earth.mp4");
+    </script>
   </body>
 </html>

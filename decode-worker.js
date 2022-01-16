@@ -10,10 +10,8 @@ self.onmessage = (e) => {
 
     let decoder = new VideoDecoder({
         output: async frame => {
-
             const bitmap = await createImageBitmap(frame)
 
-            // Close ASAP.
             frame.close();
 
             self.postMessage(bitmap, [bitmap])
@@ -23,15 +21,7 @@ self.onmessage = (e) => {
     });
 
     demuxer.getConfig().then((config) => {
-        
         decoder.configure(config);
         demuxer.start((chunk) => { decoder.decode(chunk); })
-
     });
-
-
 }
-
-
-
-
