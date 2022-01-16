@@ -9,6 +9,26 @@ const offscreen = document.createElement('canvas')
 const ctx = offscreen.getContext('2d')
 document.body.appendChild(offscreen)
 
+const full = document.createElement('button')
+document.body.appendChild(full)
+full.innerText = '↖︎'
+
+full.addEventListener('click', () => {
+    offscreen.requestFullscreen();
+})
+
+
+// function toggleFullScreen() {
+//     if (!document.fullscreenElement) {
+//         offscreen.requestFullscreen();
+//     } else {
+//         if (document.exitFullscreen) {
+//             document.exitFullscreen();
+//         }
+//     }
+// }
+
+
 
 const bitmaps = window.bitmaps = []
 
@@ -79,48 +99,45 @@ function render() {
 }
 
 function setScrollHeight() {
-    document.body.style.height = `calc(100vh + ${bitmaps.length * step}px)`
+    // document.body.style.height = `calc(100vh + ${bitmaps.length * step}px)`
 }
+// function onScroll() {
+//     const idx2 = Math.floor(window.scrollY / step);
+
+//     if (idx !== idx2) {
+//         idx = idx2;
+//         cancelAnimationFrame(raf)
+//         raf = requestAnimationFrame(render)
+//     }
+// }
+
+// window.addEventListener('scroll', onScroll)
 
 
+window.addEventListener('mousemove', (e) => {
+    const idx2 = Math.floor((e.clientY / window.innerHeight) * bitmaps.length)
 
-function onScroll() {
-    const idx2 = Math.floor(window.scrollY / step);
 
     if (idx !== idx2) {
         idx = idx2;
-        cancelAnimationFrame(raf)
-        raf = requestAnimationFrame(render)
+        requestAnimationFrame(render)
     }
-}
 
-window.addEventListener('scroll', onScroll)
+    e.preventDefault()
+})
 
+window.addEventListener('touchmove', (e) => {
+    const y = e.touches[0].clientY
+    const idx2 = Math.floor((y / window.innerHeight) * bitmaps.length)
 
-// window.addEventListener('mousemove', (e) => {
-//     const idx2 = Math.floor((e.clientX / window.innerWidth) * bitmaps.length)
-
-//     if (idx !== idx2) {
-//         idx = idx2;
-//         requestAnimationFrame(render)
-//     }
-
-//     e.preventDefault()
-// })
-
-// window.addEventListener('touchmove', (e) => {
-//     const x = e.touches[0].clientX
-
-//     const idx2 = Math.floor((x / window.innerWidth) * bitmaps.length)
-
-//     if (idx !== idx2) {
-//         idx = idx2;
-//         requestAnimationFrame(render)
-//     }
+    if (idx !== idx2) {
+        idx = idx2;
+        requestAnimationFrame(render)
+    }
 
 
-//     e.preventDefault()
-// }, { passive: false })
+    e.preventDefault()
+}, { passive: false })
 
 
 
