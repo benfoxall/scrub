@@ -1,7 +1,9 @@
+const workerSrc = new URL("./decode-worker.js", import.meta.url).href;
 
 export class ViewerBase {
     constructor(src) {
-        const decoder = new Worker('./decode-worker.js', { type: "module" })
+
+        const decoder = new Worker(workerSrc, { type: "module" })
 
         decoder.addEventListener('message', (event) => {
             if (event.data instanceof ImageBitmap) {

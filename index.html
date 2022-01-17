@@ -28,9 +28,11 @@
 
   <body>
     <script type="module">
-      import { Scroller } from "./Scroller.js";
+      import { Scroller } from "./src/Scroller.js";
 
-      new Scroller("videos/earth.mp4");
+      const src = new URL("videos/earth.mp4", import.meta.url).href;
+
+      new Scroller(src);
     </script>
   </body>
 </html>
