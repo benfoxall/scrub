@@ -1,4 +1,5 @@
-const workerSrc = new URL("./decode-worker.js", import.meta.url).href;
+const workerSrc = new URL("./worker.js", import.meta.url).href;
+console.log(workerSrc)
 
 export class ViewerBase {
     constructor(src) {

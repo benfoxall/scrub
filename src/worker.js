@@ -1,6 +1,5 @@
 
-import { MP4Demuxer } from './mp4_demuxer.js'
-
+import { MP4Demuxer } from './mp4/MP4Demuxer.js'
 
 self.onmessage = (e) => {
     const file = e.data;
