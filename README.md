@@ -4,6 +4,8 @@ Video scrubbing with WebCodecs.
 
 This effect is usually made by downloading each frame as an image, though this demo uses a single file and extracts frames with WebCodecs.
 
+![scrub](https://media.giphy.com/media/K1hcRycU5tSOvbqN7g/giphy.gif)
+
 
 ## Sources
 
