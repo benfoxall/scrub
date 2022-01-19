@@ -21,3 +21,8 @@ The video decoding code came from the w3c WebCodecs sample repo
 Earth video genearated from [NOAA / GOES Image Viewer](https://www.star.nesdis.noaa.gov/goes/fulldisk_band.php?sat=G16&band=GEOCOLOR&length=12&dim=1)
 
 - https://gist.github.com/benfoxall/2741f5383528e6d2bc4c609b812310f1
+
+
+## :link:
+
+* https://github.com/benfoxall/video-stills Previous hack (using wasm & broadway to decode)
