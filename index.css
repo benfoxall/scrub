@@ -1,0 +1,23 @@
+body {
+  background: #222;
+  overscroll-behavior: none;
+  color: #ccc;
+  font-family: "Roboto Mono", monospace;
+}
+a {
+  color: inherit;
+  text-decoration-color: #555;
+}
+canvas {
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+}
+
+nav {
+  position: fixed;
+  z-index: 1;
+}

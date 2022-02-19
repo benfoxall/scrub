@@ -8,31 +8,55 @@
       http-equiv="origin-trial"
       content="AhZ0yP35wnlfvVtqZa+GRb3MfXgtHnS8+i5+tgRI+tkz0/b7DQ+a72h1nLzbWxT/WfvVGN95G2hIexI/5P+sRgkAAABVeyJvcmlnaW4iOiJodHRwczovL2JlbmphbWluYmVuYmVuLmNvbTo0NDMiLCJmZWF0dXJlIjoiV2ViQ29kZWNzIiwiZXhwaXJ5IjoxNjM4NDAzMTk5fQ=="
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200&display=swap"
+      rel="stylesheet"
+    />
     <title>Scrub</title>
-
-    <style>
-      body {
-        background: #000;
-        overscroll-behavior: none;
-      }
-      canvas {
-        position: fixed;
-        top: 5%;
-        left: 5%;
-        width: 90%;
-        height: 90%;
-        object-fit: contain;
-      }
-    </style>
+    <link rel="stylesheet" href="index.css" />
   </head>
 
   <body>
+    <nav id="nav">
+      <details open>
+        <summary>Scrub</summary>
+        <ol>
+          <li><a href="?scroll-earth">Window scroll 🌎</a></li>
+          <li><a href="?scroll-ink">Window scroll (ink) 🎨</a></li>
+        </ol>
+      </details>
+    </nav>
     <script type="module">
       import { Scroller } from "./src/Scroller.js";
 
-      const src = new URL("videos/earth.mp4", import.meta.url).href;
+      switch (location.search) {
+        case "?scroll-earth": {
+          const src = new URL("videos/earth.mp4", import.meta.url).href;
+
+          new Scroller(src);
+
+          // nav.remove();
+          break;
+        }
+        case "?scroll-ink": {
+          const src = new URL("videos/ink.mp4", import.meta.url).href;
+
+          new Scroller(src);
+
+          // nav.remove();
+          break;
+        }
+      }
+    </script>
+
+    <!-- <script type="module">
+      import { Scroller } from "./src/Scroller.js";
+
+      const src = new URL("videos/ink.mp4", import.meta.url).href;
 
       new Scroller(src);
-    </script>
+    </script> -->
   </body>
 </html>
