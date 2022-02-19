@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <!-- 👋 https://github.com/benfoxall/scrub 👋 -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,11 +34,11 @@
 
       switch (location.search) {
         case "?scroll-earth": {
-          const src = new URL("videos/earth.mp4", import.meta.url).href;
+          const src = new URL("videos/earth-60fps-1024.mp4", import.meta.url)
+            .href;
 
           new Scroller(src);
 
-          // nav.remove();
           break;
         }
         case "?scroll-ink": {
@@ -45,18 +46,9 @@
 
           new Scroller(src);
 
-          // nav.remove();
           break;
         }
       }
     </script>
-
-    <!-- <script type="module">
-      import { Scroller } from "./src/Scroller.js";
-
-      const src = new URL("videos/ink.mp4", import.meta.url).href;
-
-      new Scroller(src);
-    </script> -->
   </body>
 </html>
