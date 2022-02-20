@@ -26,7 +26,11 @@
         <ol>
           <li><a href="?scroll-earth">Window scroll 🌎</a></li>
           <li><a href="?scroll-ink">Window scroll (ink) 🎨</a></li>
-          <li><a href="?texture">Texture</a></li>
+          <li><a href="?scroll-skate">Window scroll (skate) 🛹</a></li>
+          <li><a href="?texture">Texture 🛹</a></li>
+          <li><a href="?texture-earth">Texture 🌎</a></li>
+
+          <li><a href="?cube">Cube</a></li>
         </ol>
       </details>
     </nav>
@@ -56,6 +60,16 @@
       </script>
     </template>
 
+    <template data-href="?scroll-skate">
+      <script type="module">
+        import { Scroller } from "./src/Scroller.js";
+
+        const src = videoHref("skate-square.mp4");
+
+        new Scroller(src);
+      </script>
+    </template>
+
     <template data-href="?texture">
       <aside>
         <input type="range" min="0" max="512" id="slide" value="0" />
@@ -63,7 +77,20 @@
       <script type="module">
         import { Texture } from "./src/Texture.js";
 
-        const src = videoHref("ferry-square.mp4");
+        const src = videoHref("skate-square.mp4");
+
+        new Texture(src);
+      </script>
+    </template>
+
+    <template data-href="?texture-earth">
+      <aside>
+        <input type="range" min="0" max="512" id="slide" value="0" />
+      </aside>
+      <script type="module">
+        import { Texture } from "./src/Texture.js";
+
+        const src = videoHref("earth.mp4");
 
         new Texture(src);
       </script>

@@ -23,12 +23,9 @@ uniform sampler3D u_cubetex;
 
 out vec4 outColor;
 
-void main() {
-  // gl_FragCoord.y *= -1.0;
-  vec2 point = gl_FragCoord.xy / resolution.xy;
 
-  point.y = (point.y * -1.0) + 1.0;
-  float c = 1.0 - length(point - vec2(0.5, 0.5));
+void main() {
+  vec2 point = gl_FragCoord.xy / resolution.xy;
 
   float x = point.x;
   float y = point.y;
@@ -36,16 +33,13 @@ void main() {
   outColor = texture(u_cubetex, 
     vec3(
       point, 
-      u_slide * c * 0.5
+      u_slide * x * y
     )
   );
-
-  // outColor.r = outColor.g = c;
-
 }
 `;
 
-export class Texture extends ViewerBase {
+export class Cube extends ViewerBase {
   bitmaps = [];
   canvas = document.createElement("canvas");
 
@@ -124,15 +118,13 @@ export class Texture extends ViewerBase {
 
     const { gl } = this;
 
-    // const bm2 = createImageBitmap(bitmap, 300, 300, 512, 512);
-
     gl.bindTexture(gl.TEXTURE_3D, this.texture);
 
     gl.texSubImage3D(
       gl.TEXTURE_3D,
       0,
-      0, // x
-      0, // y
+      -600, // x
+      -600, // y
       z, // z
       512, // width
       512, // height
@@ -140,10 +132,8 @@ export class Texture extends ViewerBase {
       gl.RGBA,
       gl.UNSIGNED_BYTE,
       bitmap
-      // bm2
     );
 
     bitmap.close();
-    // bm2.close();
   }
 }
