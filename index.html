@@ -29,26 +29,33 @@
         </ol>
       </details>
     </nav>
-    <script type="module">
-      import { Scroller } from "./src/Scroller.js";
 
-      switch (location.search) {
-        case "?scroll-earth": {
-          const src = new URL("videos/earth-60fps-1024.mp4", import.meta.url)
-            .href;
+    <template data-href="?scroll-earth">
+      <script type="module">
+        import { Scroller } from "./src/Scroller.js";
 
-          new Scroller(src);
+        const src = new URL("videos/earth-60fps-1024.mp4", import.meta.url)
+          .href;
 
-          break;
-        }
-        case "?scroll-ink": {
-          const src = new URL("videos/ink.mp4", import.meta.url).href;
+        new Scroller(src);
+      </script>
+    </template>
 
-          new Scroller(src);
+    <template data-href="?scroll-ink">
+      <h1>hello</h1>
+      <script type="module">
+        import { Scroller } from "./src/Scroller.js";
 
-          break;
-        }
-      }
+        const src = new URL("videos/ink.mp4", import.meta.url).href;
+
+        new Scroller(src);
+      </script>
+    </template>
+
+    <script>
+      for (const template of document.querySelectorAll("template"))
+        if (template.dataset.href === location.search)
+          template.parentElement.insertBefore(template.content, template);
     </script>
   </body>
 </html>
