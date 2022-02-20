@@ -26,16 +26,21 @@
         <ol>
           <li><a href="?scroll-earth">Window scroll 🌎</a></li>
           <li><a href="?scroll-ink">Window scroll (ink) 🎨</a></li>
+          <li><a href="?texture">Texture</a></li>
         </ol>
       </details>
     </nav>
+
+    <script type="module">
+      window.videoHref = (file) =>
+        new URL("videos/" + file, import.meta.url).href;
+    </script>
 
     <template data-href="?scroll-earth">
       <script type="module">
         import { Scroller } from "./src/Scroller.js";
 
-        const src = new URL("videos/earth-60fps-1024.mp4", import.meta.url)
-          .href;
+        const src = videoHref("earth-60fps-1024.mp4");
 
         new Scroller(src);
       </script>
@@ -45,9 +50,22 @@
       <script type="module">
         import { Scroller } from "./src/Scroller.js";
 
-        const src = new URL("videos/ink.mp4", import.meta.url).href;
+        const src = videoHref("ink.mp4");
 
         new Scroller(src);
+      </script>
+    </template>
+
+    <template data-href="?texture">
+      <aside>
+        <input type="range" min="0" max="512" id="slide" value="0" />
+      </aside>
+      <script type="module">
+        import { Cube } from "./src/Cube.js";
+
+        const src = videoHref("ferry-square.mp4");
+
+        new Cube(src);
       </script>
     </template>
 

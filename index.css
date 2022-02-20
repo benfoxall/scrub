@@ -15,9 +15,14 @@ canvas {
   width: 90%;
   height: 90%;
   object-fit: contain;
+  image-rendering: pixelated;
 }
 
 nav {
   position: fixed;
   z-index: 1;
+}
+
+aside {
+  float: right;
 }
