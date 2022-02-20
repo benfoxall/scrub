@@ -1,14 +1,21 @@
 import { MP4Demuxer } from "./mp4/MP4Demuxer.js";
 
 self.onmessage = (e) => {
-  const file = e.data;
+  const path = e.data.path;
 
-  let demuxer = new MP4Demuxer(file);
+  let demuxer = new MP4Demuxer(path);
   let bitmapOpts = {};
 
   let decoder = new VideoDecoder({
     output: async (frame) => {
-      const bitmap = await createImageBitmap(frame, bitmapOpts);
+      const bitmap = await createImageBitmap(
+        frame,
+        // 500,
+        // 200,
+        // 1012,
+        // 712,
+        bitmapOpts
+      );
 
       frame.close();
 

@@ -1,7 +1,7 @@
 const workerSrc = new URL("./worker.js", import.meta.url).href;
 
 export class ViewerBase {
-  constructor(src) {
+  constructor(path) {
     const decoder = new Worker(workerSrc, { type: "module" });
 
     decoder.addEventListener("message", (event) => {
@@ -12,7 +12,7 @@ export class ViewerBase {
       }
     });
 
-    decoder.postMessage(src);
+    decoder.postMessage({ path });
   }
 
   handle(bitmap) {}
