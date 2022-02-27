@@ -30,7 +30,7 @@
           <li><a href="?texture">Texture 🛹</a></li>
           <li><a href="?texture-earth">Texture 🌎</a></li>
 
-          <li><a href="?cube">Cube</a></li>
+          <li><a href="?cube-skate">Cube 🛹</a></li>
         </ol>
       </details>
     </nav>
@@ -93,6 +93,19 @@
         const src = videoHref("earth.mp4");
 
         new Texture(src);
+      </script>
+    </template>
+
+    <template data-href="?cube-skate">
+      <aside>
+        <input type="range" min="0" max="512" id="slide" value="0" />
+      </aside>
+      <script type="module">
+        import { Cube } from "./src/Cube.js";
+
+        const src = videoHref("skate-square.mp4");
+
+        new Cube(src);
       </script>
     </template>
 
