@@ -116,8 +116,19 @@ export class Cube extends ViewerBase {
     });
 
     const cube = new THREE.Mesh(geometry, material2);
-    scene.add(cube);
     cube.rotateX(Math.PI);
+    scene.add(cube);
+
+    const cubeBase = new THREE.Mesh(
+      base,
+      new THREE.MeshBasicMaterial({
+        color: 0x111111,
+        depthTest: false,
+      })
+    );
+    scene.add(cubeBase);
+    cubeBase.renderOrder = 1;
+    cube.renderOrder = 2;
 
     camera.position.z = 4;
 
@@ -131,15 +142,10 @@ export class Cube extends ViewerBase {
       const x = (512 - slideX.valueAsNumber) / 512;
       const y = (512 - slideY.valueAsNumber) / 512;
       const z = (512 - slideZ.valueAsNumber) / 512;
-      // geometry.
-      // geometry.attributes.position.array[0] = 2;
-      // for(const o of geometry.attributes.position)
-      // for (let i = 0; i < geometry.attributes.position.array.length; i += 4) {
-      //   // geometry.attributes.position[i] = v.position[i] * x;
-      // }
-      // debugger;
+
+      geometry.translate(-0.5, -0.5, -0.5);
       geometry.scale(x, y, z);
-      // geometry.needsUpdate = true;
+      geometry.translate(0.5, 0.5, 0.5);
 
       controls.update();
 
