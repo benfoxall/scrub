@@ -99,7 +99,7 @@ export class Texture extends ViewerBase {
         u_slide: slide.valueAsNumber / 512,
       };
 
-      window.uu = uniforms;
+      // window.uu = uniforms;
 
       gl.useProgram(programInfo.program);
       twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
@@ -107,7 +107,7 @@ export class Texture extends ViewerBase {
       // gl.activeTexture(gl.TEXTURE0);
       // twgl.setTexture(texture);
       // gl.bindTexture(gl.TEXTURE_3D, texture);
-      window.twgl = twgl;
+      // window.twgl = twgl;
       twgl.drawBufferInfo(gl, bufferInfo);
 
       requestAnimationFrame(render);
