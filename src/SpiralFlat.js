@@ -18,9 +18,13 @@ precision mediump sampler3D;
 in vec3 coord;
 
 uniform sampler3D cube;
+uniform float time;
 
 void main() {
-  vec4 tcolor = texture(cube, coord + 0.5);
+    vec3 target = coord + 0.5;
+    target.x = mod(target.x + time / 10.0, 1.0);
+
+  vec4 tcolor = texture(cube, target);
   tcolor.a = 1.0;
   gl_FragColor = tcolor;
 }
@@ -77,11 +81,12 @@ export class SpiralFlat extends ViewerBase {
 
     camera.position.set(0, 2, 0);
 
-    function animate() {
+    function animate(t = 0) {
       requestAnimationFrame(animate);
 
       controls.update();
       //   ribbon.rotateZ(0.001);
+      material2.uniforms.time.value = t / 1000;
 
       renderer.render(scene, camera);
     }
