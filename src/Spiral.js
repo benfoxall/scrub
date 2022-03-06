@@ -1,11 +1,8 @@
 import * as THREE from "three";
 import { ViewerBase } from "./ViewerBase.js";
 import { OrbitControls } from "../ext/OrbitControls.js";
-import { VideoCubeTexture } from "./util/loaders.js";
-
-const slideX = document.querySelector("[name=x]");
-const slideY = document.querySelector("[name=y]");
-const slideZ = document.querySelector("[name=z]");
+import { RibbonGeometry, spiral, VideoCubeTexture } from "./util/loaders.js";
+import { Mesh } from "three";
 
 const vertexShader = `
 out vec3 coord;
@@ -28,7 +25,7 @@ void main() {
 }
 `;
 
-export class Ribbon extends ViewerBase {
+export class Spiral extends ViewerBase {
   bitmaps = [];
   canvas = document.createElement("canvas");
   z = 0;
@@ -57,12 +54,6 @@ export class Ribbon extends ViewerBase {
     controls.enableDamping = true;
     controls.update();
 
-    const boxGeom = new THREE.BoxGeometry(1, 1, 1);
-    // wrong, but kind of cool
-    //boxGeom.rotateX(0.4);
-
-    const subBoxGeom = boxGeom.clone();
-
     this.videoCube = new VideoCubeTexture();
 
     const material2 = (this.material2 = new THREE.ShaderMaterial({
@@ -73,38 +64,23 @@ export class Ribbon extends ViewerBase {
       },
       vertexShader,
       fragmentShader,
+      side: THREE.DoubleSide,
     }));
 
-    const cube = new THREE.Mesh(subBoxGeom, material2);
-    cube.rotateX(Math.PI);
-    scene.add(cube);
+    const ribbon = new RibbonGeometry(spiral(400));
+    ribbon.rotateX(-Math.PI / 2);
 
-    const cubeBase = new THREE.Mesh(
-      boxGeom,
-      new THREE.MeshBasicMaterial({
-        color: 0x111111,
-        depthTest: false,
-      })
-    );
-    scene.add(cubeBase);
-    cubeBase.renderOrder = 1;
-    cube.renderOrder = 2;
+    const mesh = new Mesh(ribbon, material2);
+
+    scene.add(mesh);
 
     camera.position.set(1, 2, 2);
 
     function animate() {
       requestAnimationFrame(animate);
-      subBoxGeom.copy(boxGeom);
-
-      const x = slideX.valueAsNumber;
-      const y = slideY.valueAsNumber;
-      const z = slideZ.valueAsNumber;
-
-      subBoxGeom.translate(-0.5, -0.5, -0.5);
-      subBoxGeom.scale(x, y, z);
-      subBoxGeom.translate(0.5, 0.5, 0.5);
 
       controls.update();
+      ribbon.rotateZ(0.01);
 
       renderer.render(scene, camera);
     }
