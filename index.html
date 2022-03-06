@@ -85,7 +85,7 @@
 
     <template data-href="?texture">
       <aside>
-        <input type="range" min="0" max="512" id="slide" value="0" />
+        <input type="range" min="0" max="512" value="0" />
       </aside>
       <script type="module">
         import { Texture } from "./src/Texture.js";
@@ -98,7 +98,7 @@
 
     <template data-href="?texture-earth">
       <aside>
-        <input type="range" min="0" max="512" id="slide" value="0" />
+        <input type="range" min="0" max="512" value="0" />
       </aside>
       <script type="module">
         import { Texture } from "./src/Texture.js";
@@ -111,9 +111,9 @@
 
     <template data-href="?cube-skate">
       <aside>
-        <input name="x" type="range" min="0" max="512" id="slide" value="0" />
-        <input name="y" type="range" min="0" max="512" id="slide" value="0" />
-        <input name="z" type="range" min="0" max="512" id="slide" value="0" />
+        <input name="x" type="range" min="0" max="1" value="1" step="0.00001" />
+        <input name="y" type="range" min="0" max="1" value="1" step="0.00001" />
+        <input name="z" type="range" min="0" max="1" value="1" step="0.00001" />
       </aside>
       <script type="module">
         import { Cube } from "./src/Cube.js";
