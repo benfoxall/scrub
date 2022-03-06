@@ -112,7 +112,6 @@ export class RibbonGeometry extends BufferGeometry {
           if (v0.x > lengthsq) {
             v0.x = 0;
             v0.y -= 1.1;
-            console.log(v0);
           }
 
           return next;
@@ -120,5 +119,6 @@ export class RibbonGeometry extends BufferGeometry {
 
       this.setFromPoints(points3dFlat);
     }
+    this.center();
   }
 }
