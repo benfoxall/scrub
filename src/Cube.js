@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { ViewerBase } from "./ViewerBase.js";
 import { OrbitControls } from "../ext/OrbitControls.js";
+import { VideoCubeTexture } from "./util/loaders.js";
 
 const slideX = document.querySelector("[name=x]");
 const slideY = document.querySelector("[name=y]");
@@ -18,10 +19,10 @@ const fragmentShader = `
 precision mediump sampler3D;
 in vec3 coord;
 
-uniform sampler3D tex3d;
+uniform sampler3D cube;
 
 void main() {
-  vec4 tcolor = texture(tex3d, coord + 0.5);
+  vec4 tcolor = texture(cube, coord + 0.5);
   tcolor.a = 1.0;
   gl_FragColor = tcolor;
 }
@@ -57,20 +58,18 @@ export class Cube extends ViewerBase {
     controls.update();
 
     const boxGeom = new THREE.BoxGeometry(1, 1, 1);
+    // wrong, but kind of cool
+    //boxGeom.rotateX(0.4);
+
     const subBoxGeom = boxGeom.clone();
 
-    // const u8 = new Uint8Array(512 * 512 * 512 * 4);
-    const u8 = null; // (throws an error, but saves .5gb)
-
-    this.tex3d = new THREE.Data3DTexture(u8, 512, 512, 300);
-
-    this.tex3d.needsUpdate = true;
+    this.videoCube = new VideoCubeTexture();
 
     const material2 = (this.material2 = new THREE.ShaderMaterial({
       uniforms: {
         time: { value: 1.0 },
         resolution: { value: new THREE.Vector2() },
-        tex3d: { value: this.tex3d },
+        cube: { value: this.videoCube.texture },
       },
       vertexShader,
       fragmentShader,
@@ -91,7 +90,7 @@ export class Cube extends ViewerBase {
     cubeBase.renderOrder = 1;
     cube.renderOrder = 2;
 
-    camera.position.z = 4;
+    camera.position.set(1, 2, 2);
 
     function animate() {
       requestAnimationFrame(animate);
@@ -110,26 +109,11 @@ export class Cube extends ViewerBase {
       renderer.render(scene, camera);
     }
 
-    window.rwe = renderer;
-
     animate();
   }
 
   handle(bitmap) {
-    const z = this.z++ % 512;
-
-    if (this.z > 300) return;
-
-    this.renderer.copyTextureToTexture3D(
-      new THREE.Box3(
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(511, 511, 0)
-      ),
-      new THREE.Vector3(0, 0, z),
-      { image: bitmap },
-      this.tex3d
-    );
-
+    this.videoCube.handleBitmap(bitmap, this.renderer);
     bitmap.close();
   }
 }
