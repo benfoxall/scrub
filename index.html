@@ -34,7 +34,7 @@
 
   <body>
     <nav id="nav">
-      <details open>
+      <details>
         <summary>Scrub</summary>
         <ol>
           <li><a href="?scroll-earth">Window scroll 🌎</a></li>
@@ -44,6 +44,7 @@
           <li><a href="?texture-earth">Time warp 🌎</a></li>
           <li><a href="?cube-skate">Cube 🛹</a></li>
           <li><a href="?spiral-skate">Spiral 🛹</a></li>
+          <li><a href="?spiral-flat-skate">Spiral Flat 🛹</a></li>
         </ol>
       </details>
     </nav>
@@ -131,6 +132,16 @@
         const src = videoHref("skate-square.mp4");
 
         new Spiral(src);
+      </script>
+    </template>
+
+    <template data-href="?spiral-flat-skate">
+      <script type="module">
+        import { SpiralFlat } from "./src/SpiralFlat.js";
+
+        const src = videoHref("skate-square.mp4");
+
+        new SpiralFlat(src);
       </script>
     </template>
 

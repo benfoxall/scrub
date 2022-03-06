@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { BufferGeometry } from "three";
+import { BufferGeometry, Vector3 } from "three";
 
 export class VideoCubeTexture {
   z = 0;
@@ -53,7 +53,7 @@ export function spiral(n) {
 }
 
 export class RibbonGeometry extends BufferGeometry {
-  constructor(points2d) {
+  constructor(points2d, unfurl = false) {
     super();
 
     const points3d = [];
@@ -76,5 +76,49 @@ export class RibbonGeometry extends BufferGeometry {
       });
 
     this.setFromPoints(points3d);
+
+    // if unfurl
+    if (unfurl) {
+      this.setAttribute("tex_position", this.getAttribute("position"));
+
+      const points3dFlat = [];
+      let v0 = new Vector3();
+      const down = new THREE.Matrix4().makeTranslation(0, 1, 0);
+
+      let length = 0;
+      points2d.reduce((prev, next) => {
+        if (prev) length += prev.distanceTo(next);
+        return next;
+      });
+      const lengthsq = Math.sqrt(length);
+
+      points2d
+        .map((p) => new THREE.Vector3(...p.toArray()))
+        .reduce((prev, next) => {
+          if (prev) {
+            const dist = prev.distanceTo(next);
+
+            const a = v0.clone();
+            const a2 = v0.clone().applyMatrix4(down);
+
+            v0.add(new Vector3(dist, 0, 0));
+
+            const b = v0.clone();
+            const b2 = v0.clone().applyMatrix4(down);
+
+            points3dFlat.push(a, b, b2, a2, a, b2);
+          }
+
+          if (v0.x > lengthsq) {
+            v0.x = 0;
+            v0.y -= 1.1;
+            console.log(v0);
+          }
+
+          return next;
+        });
+
+      this.setFromPoints(points3dFlat);
+    }
   }
 }
