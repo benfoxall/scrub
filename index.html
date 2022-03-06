@@ -42,8 +42,8 @@
           <li><a href="?scroll-skate">Window scroll (skate) 🛹</a></li>
           <li><a href="?texture">Time warp 🛹</a></li>
           <li><a href="?texture-earth">Time warp 🌎</a></li>
-
           <li><a href="?cube-skate">Cube 🛹</a></li>
+          <li><a href="?ribbon-skate">Ribbon 🛹</a></li>
         </ol>
       </details>
     </nav>
@@ -121,6 +121,21 @@
         const src = videoHref("skate-square.mp4");
 
         new Cube(src);
+      </script>
+    </template>
+
+    <template data-href="?ribbon-skate">
+      <aside>
+        <input name="x" type="range" min="0" max="512" id="slide" value="0" />
+        <input name="y" type="range" min="0" max="512" id="slide" value="0" />
+        <input name="z" type="range" min="0" max="512" id="slide" value="0" />
+      </aside>
+      <script type="module">
+        import { Ribbon } from "./src/Ribbon.js";
+
+        const src = videoHref("skate-square.mp4");
+
+        new Ribbon(src);
       </script>
     </template>
 

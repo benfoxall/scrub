@@ -30,3 +30,12 @@ Inky water video - by hicham yah from Pexels
 ## :link:
 
 - https://github.com/benfoxall/video-stills Previous hack (using wasm & broadway to decode)
+
+---
+
+## TODO
+
+- [ ] Time ribbon
+- [ ] streaming decoder
+- [ ] video loops
+- [ ] drag upload
