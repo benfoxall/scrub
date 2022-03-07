@@ -1,0 +1,7 @@
+{
+  "image": "mcr.microsoft.com/vscode/devcontainers/typescript-node:0-16-bullseye",
+  "settings": {},
+  "extensions": ["esbenp.prettier-vscode"],
+  "forwardPorts": [80],
+  "postCreateCommand": "npm i -g live-server"
+}
