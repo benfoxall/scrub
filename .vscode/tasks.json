@@ -4,7 +4,7 @@
     {
       "label": "Live Server",
       "type": "shell",
-      "command": "live-server --port=80",
+      "command": "live-server --port=3333",
       "runOptions": {
         "runOn": "folderOpen"
       },
