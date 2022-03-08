@@ -25,7 +25,8 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "https://cdn.skypack.dev/three@0.138.0"
+          "three": "https://cdn.skypack.dev/three@0.138.0",
+          "idb-keyval": "https://cdn.skypack.dev/idb-keyval"
         }
       }
     </script>
@@ -46,12 +47,41 @@
           <li><a href="?spiral-skate">Spiral 🛹</a></li>
           <li><a href="?spiral-flat-skate">Spiral Flat 🛹</a></li>
         </ol>
+        <hr />
+        <input type="file" accept="video/*" />
+        <button id="clear">clear</button>
       </details>
     </nav>
 
     <script type="module">
+      import { get, set } from "idb-keyval";
+
+      const clear = document.querySelector("#clear");
+      const input = document.querySelector("[type=file]");
+
+      get("file").then((d) => {
+        if (d) {
+          input.remove();
+          clear.addEventListener("click", () => {
+            set("file", undefined);
+            location.reload();
+          });
+          clear.innerText = `× ${d.name}`;
+        } else {
+          clear.remove();
+          input.addEventListener("change", () => {
+            set("file", input.files[0]);
+            location.reload();
+          });
+        }
+      });
+
       window.videoHref = (file) =>
-        new URL("videos/" + file, import.meta.url).href;
+        get("file").then((stored) =>
+          stored
+            ? URL.createObjectURL(stored)
+            : new URL("videos/" + file, import.meta.url).href
+        );
     </script>
 
     <template data-href="?scroll-earth">

@@ -12,7 +12,9 @@ export class ViewerBase {
       }
     });
 
-    decoder.postMessage({ path });
+    Promise.resolve(path).then((path) => {
+      decoder.postMessage({ path });
+    });
   }
 
   handle(bitmap) {}
