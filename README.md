@@ -27,6 +27,10 @@ Inky water video - by hicham yah from Pexels
 
 - https://www.pexels.com/video/mixture-of-smoke-with-different-colors-2025634/
 
+Traffic:
+
+- https://www.pexels.com/video/traffic-on-an-intersection-road-in-a-city-3121459
+
 ## :link:
 
 - https://github.com/benfoxall/video-stills Previous hack (using wasm & broadway to decode)

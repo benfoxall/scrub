@@ -38,79 +38,38 @@
       <details>
         <summary>Scrub</summary>
         <ol>
-          <li><a href="?scroll-earth">Window scroll 🌎</a></li>
-          <li><a href="?scroll-ink">Window scroll (ink) 🎨</a></li>
-          <li><a href="?scroll-skate">Window scroll (skate) 🛹</a></li>
-          <li><a href="?texture">Time warp 🛹</a></li>
-          <li><a href="?texture-earth">Time warp 🌎</a></li>
-          <li><a href="?cube-skate">Cube 🛹</a></li>
-          <li><a href="?spiral-skate">Spiral 🛹</a></li>
-          <li><a href="?spiral-flat-skate">Spiral Flat 🛹</a></li>
+          <li><a href="?scroll">Window scroll</a></li>
+          <li><a href="?texture">Time warp</a></li>
+          <li><a href="?cube">Cube</a></li>
+          <li><a href="?spiral">Spiral</a></li>
+          <li><a href="?spiral-flat">Spiral Flat</a></li>
         </ol>
         <hr />
+
+        <select>
+          <option value="earth-60fps-1024.mp4">Earth</option>
+          <option value="skate-square.mp4">Skate</option>
+          <option value="ink.mp4">Ink</option>
+          <option value="motorbike.mp4">Motorbike</option>
+          <option value="traffic.mp4">Traffic</option>
+        </select>
+
         <input type="file" accept="video/*" />
         <button id="clear">clear</button>
       </details>
     </nav>
 
     <script type="module">
-      import { get, set } from "idb-keyval";
-
-      const clear = document.querySelector("#clear");
-      const input = document.querySelector("[type=file]");
-
-      get("file").then((d) => {
-        if (d) {
-          input.remove();
-          clear.addEventListener("click", () => {
-            set("file", undefined);
-            location.reload();
-          });
-          clear.innerText = `× ${d.name}`;
-        } else {
-          clear.remove();
-          input.addEventListener("change", () => {
-            set("file", input.files[0]);
-            location.reload();
-          });
-        }
-      });
-
-      window.videoHref = (file) =>
-        get("file").then((stored) =>
-          stored
-            ? URL.createObjectURL(stored)
-            : new URL("videos/" + file, import.meta.url).href
-        );
+      import { initUI } from "./src/util/sources.js";
+      initUI();
     </script>
 
-    <template data-href="?scroll-earth">
+    <template data-href="?scroll">
       <script type="module">
         import { Scroller } from "./src/Scroller.js";
+        import { videoSrc } from "./src/util/sources.js";
 
-        const src = videoHref("earth-60fps-1024.mp4");
-
-        new Scroller(src);
-      </script>
-    </template>
-
-    <template data-href="?scroll-ink">
-      <script type="module">
-        import { Scroller } from "./src/Scroller.js";
-
-        const src = videoHref("ink.mp4");
-
-        new Scroller(src);
-      </script>
-    </template>
-
-    <template data-href="?scroll-skate">
-      <script type="module">
-        import { Scroller } from "./src/Scroller.js";
-
-        const src = videoHref("skate-square.mp4");
-
-        new Scroller(src);
+        new Scroller(videoSrc);
       </script>
     </template>
 
@@ -120,27 +79,13 @@
       </aside>
       <script type="module">
         import { Texture } from "./src/Texture.js";
+        import { videoSrc } from "./src/util/sources.js";
 
-        const src = videoHref("skate-square.mp4");
-
-        new Texture(src);
+        new Texture(videoSrc);
       </script>
     </template>
 
-    <template data-href="?texture-earth">
-      <aside>
-        <input type="range" min="0" max="512" value="0" id="slide"  />
-      </aside>
-      <script type="module">
-        import { Texture } from "./src/Texture.js";
-
-        const src = videoHref("earth.mp4");
-
-        new Texture(src);
-      </script>
-    </template>
-
-    <template data-href="?cube-skate">
+    <template data-href="?cube">
       <aside>
         <input name="x" type="range" min="0" max="1" value="1" step="0.00001" />
         <input name="y" type="range" min="0" max="1" value="1" step="0.00001" />
@@ -148,30 +93,27 @@
       </aside>
       <script type="module">
         import { Cube } from "./src/Cube.js";
+        import { videoSrc } from "./src/util/sources.js";
 
-        const src = videoHref("skate-square.mp4");
-
-        new Cube(src);
+        new Cube(videoSrc);
       </script>
     </template>
 
-    <template data-href="?spiral-skate">
+    <template data-href="?spiral">
       <script type="module">
         import { Spiral } from "./src/Spiral.js";
+        import { videoSrc } from "./src/util/sources.js";
 
-        const src = videoHref("skate-square.mp4");
-
-        new Spiral(src);
+        new Spiral(videoSrc);
       </script>
     </template>
 
-    <template data-href="?spiral-flat-skate">
+    <template data-href="?spiral-flat">
       <script type="module">
         import { SpiralFlat } from "./src/SpiralFlat.js";
+        import { videoSrc } from "./src/util/sources.js";
 
-        const src = videoHref("skate-square.mp4");
-
-        new SpiralFlat(src);
+        new SpiralFlat(videoSrc);
       </script>
     </template>
 
