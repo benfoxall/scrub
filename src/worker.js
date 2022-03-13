@@ -2,9 +2,11 @@ import { MP4Demuxer } from "./mp4/MP4Demuxer.js";
 
 self.onmessage = (e) => {
   const path = e.data.path;
+  let maxFrames = e.data.maxFrames || Infinity;
 
   let demuxer = new MP4Demuxer(path);
   let bitmapOpts = {};
+  let i = 0;
 
   let decoder = new VideoDecoder({
     output: async (frame) => {
@@ -18,6 +20,12 @@ self.onmessage = (e) => {
       );
 
       frame.close();
+
+      if (i++ === maxFrames) {
+        console.log("Reached maxFrames");
+        decoder.close();
+        return;
+      }
 
       self.postMessage(bitmap, [bitmap]);
     },

@@ -35,7 +35,8 @@ Inky water video - by hicham yah from Pexels
 
 ## TODO
 
-- [ ] Time ribbon
+- [x] Time ribbon
 - [ ] streaming decoder
+- [ ] live video
 - [ ] video loops
-- [ ] drag upload
+- [x] drag upload

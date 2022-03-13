@@ -13,7 +13,7 @@ export class ViewerBase {
     });
 
     Promise.resolve(path).then((path) => {
-      decoder.postMessage({ path });
+      decoder.postMessage({ path, maxFrames: 512 });
     });
   }
 

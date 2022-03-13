@@ -4,7 +4,7 @@ import { BufferGeometry, Vector3 } from "three";
 export class VideoCubeTexture {
   z = 0;
 
-  constructor(x = 512, y = 512, depth = 300) {
+  constructor(x = 512, y = 512, depth = 512) {
     // const u8 = new Uint8Array(x * y * depth * 4);
     const u8 = null; // (throws an error, but saves .5gb)
     this.texture = new THREE.Data3DTexture(u8, x, y, depth);
