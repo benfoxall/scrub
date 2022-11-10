@@ -90,7 +90,8 @@ export class Cube extends ViewerBase {
     cubeBase.renderOrder = 1;
     cube.renderOrder = 2;
 
-    camera.position.set(1, 2, 2);
+    // camera.position.set(1, 2, 2);
+    camera.position.set(0, 0, 1.5);
 
     function animate() {
       requestAnimationFrame(animate);
