@@ -2,6 +2,9 @@ import * as THREE from "three";
 import { ViewerBase } from "./ViewerBase.js";
 import { OrbitControls } from "../ext/OrbitControls.js";
 import { VideoCubeTexture } from "./util/loaders.js";
+import { VRButton } from 'three/addons/webxr/VRButton.js';
+import { ARButton } from 'three/addons/webxr/ARButton.js';
+
 
 
 const slideX = document.querySelector("[name=x]");
@@ -52,6 +55,8 @@ export class ARCube extends ViewerBase {
         }));
         renderer.setSize(width, height);
         renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.xr.enabled = true;
+
         document.body.appendChild(renderer.domElement);
 
         const controls = new OrbitControls(camera, renderer.domElement);
@@ -94,8 +99,7 @@ export class ARCube extends ViewerBase {
         // camera.position.set(1, 2, 2);
         camera.position.set(0, 0, 1.5);
 
-        function animate() {
-            requestAnimationFrame(animate);
+        renderer.setAnimationLoop(function () {
             subBoxGeom.copy(boxGeom);
 
             const x = slideX.valueAsNumber;
@@ -109,9 +113,10 @@ export class ARCube extends ViewerBase {
             controls.update();
 
             renderer.render(scene, camera);
-        }
 
-        animate();
+        });
+
+        document.body.appendChild(ARButton.createButton(renderer));
     }
 
     handle(bitmap) {
