@@ -44,6 +44,7 @@
           <li><a href="?cube">Cube</a></li>
           <li><a href="?spiral">Spiral</a></li>
           <li><a href="?spiral-flat">Spiral Flat</a></li>
+          <li><a href="?ar">AR</a></li>
         </ol>
         <hr />
 
@@ -147,6 +148,52 @@
         import { videoSrc } from "./src/util/sources.js";
 
         new SpiralFlat(videoSrc);
+      </script>
+    </template>
+
+    <template data-href="?ar">
+      <aside>
+        <label>
+          side
+          <input
+            name="x"
+            type="range"
+            min="0"
+            max="1"
+            value="1"
+            step="0.00001"
+          />
+        </label>
+
+        <label>
+          top
+          <input
+            name="y"
+            type="range"
+            min="0"
+            max="1"
+            value="1"
+            step="0.00001"
+          />
+        </label>
+        <label>
+          time
+          <input
+            name="z"
+            type="range"
+            min="0"
+            max="1"
+            value="1"
+            step="0.00001"
+          />
+        </label>
+      </aside>
+
+      <script type="module">
+        import { ARCube } from "./src/ARCube.js";
+        import { videoSrc } from "./src/util/sources.js";
+
+        new ARCube(videoSrc);
       </script>
     </template>
 
