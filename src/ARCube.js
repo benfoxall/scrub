@@ -2,14 +2,12 @@ import * as THREE from "three";
 import { ViewerBase } from "./ViewerBase.js";
 import { OrbitControls } from "../ext/OrbitControls.js";
 import { VideoCubeTexture } from "./util/loaders.js";
-import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { ARButton } from 'three/addons/webxr/ARButton.js';
+import { createNoise2D } from 'simplex-noise';
+const noise2D = createNoise2D();
 
 
 
-const slideX = document.querySelector("[name=x]");
-const slideY = document.querySelector("[name=y]");
-const slideZ = document.querySelector("[name=z]");
 
 const vertexShader = `
 out vec3 coord;
@@ -92,22 +90,23 @@ export class ARCube extends ViewerBase {
                 depthTest: false,
             })
         );
-        scene.add(cubeBase);
+        // scene.add(cubeBase);
         cubeBase.renderOrder = 1;
         cube.renderOrder = 2;
 
         // camera.position.set(1, 2, 2);
         camera.position.set(0, 0, 1.5);
 
-        renderer.setAnimationLoop(function () {
+        renderer.setAnimationLoop(function (time) {
             subBoxGeom.copy(boxGeom);
 
-            const x = slideX.valueAsNumber;
-            const y = slideY.valueAsNumber;
-            const z = slideZ.valueAsNumber;
+            const x = (noise2D(1, time * 0.0001) + 1) / 2;
+            const y = (noise2D(7, time * 0.0001) + 1) / 2;
+            const z = (noise2D(42, time * 0.0001) + 1) / 2;
 
-            subBoxGeom.translate(-0.5, -0.5, -0.5);
             subBoxGeom.scale(x, y, z);
+            subBoxGeom.translate(-0.5, -0.5, -0.5);
+
             subBoxGeom.translate(0.5, 0.5, 0.5);
 
             controls.update();

@@ -27,6 +27,7 @@
         "imports": {
           "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
           "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/",
+          "simplex-noise": "https://cdn.skypack.dev/simplex-noise",
           "idb-keyval": "https://cdn.skypack.dev/idb-keyval"
         }
       }
@@ -152,43 +153,6 @@
     </template>
 
     <template data-href="?ar">
-      <aside>
-        <label>
-          side
-          <input
-            name="x"
-            type="range"
-            min="0"
-            max="1"
-            value="1"
-            step="0.00001"
-          />
-        </label>
-
-        <label>
-          top
-          <input
-            name="y"
-            type="range"
-            min="0"
-            max="1"
-            value="1"
-            step="0.00001"
-          />
-        </label>
-        <label>
-          time
-          <input
-            name="z"
-            type="range"
-            min="0"
-            max="1"
-            value="1"
-            step="0.00001"
-          />
-        </label>
-      </aside>
-
       <script type="module">
         import { ARCube } from "./src/ARCube.js";
         import { videoSrc } from "./src/util/sources.js";
