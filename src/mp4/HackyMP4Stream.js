@@ -1,7 +1,7 @@
 /*! https://github.com/w3c/webcodecs/tree/main/samples/mp4-decode */
 
 // todo - lock version
-import MP4Box from "https://cdn.skypack.dev/mp4box";
+import MP4Box from "https://cdn.skypack.dev/mp4box@0.5.4";
 
 export class MP4Transform extends TransformStream {
   constructor() {
